@@ -7,10 +7,11 @@ const { Panel } = Collapse
 
 type ProductPanelProps = {
   productGroups: ProductGroupsModel
+  setCart: (groupId: string, productKey: string) => void
 }
 
 export const ProductPanelComponent = memo(
-  ({ productGroups = new ProductGroupsModel() }: ProductPanelProps): JSX.Element => {
+  ({ productGroups = new ProductGroupsModel(), setCart }: ProductPanelProps): JSX.Element => {
     return (
       <Collapse defaultActiveKey={['1']}>
         {productGroups.getGroupKeys().map((groupId: string): JSX.Element | null => {
@@ -25,6 +26,7 @@ export const ProductPanelComponent = memo(
                         id={productKey}
                         groupId={groupId}
                         product={productGroups.createProduct(groupId, productKey)}
+                        setCart={setCart}
                       />
                     )
                   }

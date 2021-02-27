@@ -19,6 +19,9 @@ export class ProductGroupsModel {
       name: string
       price: number
       count: number
+      id: number
+      groupId: number
+      amount: number
     }
   }
   public setGroup(id: number, name: string): ProductGroupsModel {
@@ -27,7 +30,7 @@ export class ProductGroupsModel {
   }
 
   public setProduct(groupId: number, { id, name, price, count }: ProductOptions): ProductGroupsModel {
-    this[groupId] = { ...this[groupId], [id]: { name, price, count } }
+    this[groupId] = { ...this[groupId], [id]: { name, price, count, id, groupId } }
     return this
   }
   public setProductAttributes(groupId: number, productId: number, price: number, count: number): ProductGroupsModel {
