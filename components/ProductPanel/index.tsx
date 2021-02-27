@@ -1,4 +1,3 @@
-import { Product } from '../../models/Product'
 import { Collapse } from 'antd'
 import React from 'react'
 import { ProductGroups } from '../../models/ProductGroups'
@@ -10,7 +9,7 @@ type ProductPanelProps = {
   productGroups: ProductGroups
 }
 
-export const ProductPanelComponent = ({ productGroups }: ProductPanelProps): JSX.Element => {
+export const ProductPanelComponent = ({ productGroups = new ProductGroups() }: ProductPanelProps): JSX.Element => {
   return (
     <Collapse defaultActiveKey={['1']}>
       {productGroups.getGroupKeys().map((groupId: string): JSX.Element | null => {
@@ -20,15 +19,7 @@ export const ProductPanelComponent = ({ productGroups }: ProductPanelProps): JSX
               {productGroups?.getProductKeys(groupId).map((productKey: string): JSX.Element | null => {
                 if (productGroups.productInStock(groupId, productKey)) {
                   return (
-                    <ProductComponent
-                      key={productKey}
-                      id={productKey}
-                      groupId={groupId}
-                      product={Object.assign(new Product(), {
-                        name: productGroups[+groupId][+productKey].name,
-                        price: productGroups[+groupId][+productKey].price,
-                      })}
-                    />
+                    <ProductComponent key={productKey} id={productKey} groupId={groupId} product={productGroups.createProduct(groupId, productKey)} />
                   )
                 }
                 return null

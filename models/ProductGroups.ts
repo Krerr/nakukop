@@ -1,3 +1,5 @@
+import { Product } from './Product'
+
 type ProductOptions = {
   id: number
   name: string
@@ -44,5 +46,12 @@ export class ProductGroups {
   }
   public productInStock(groupId: string, productKey: string) {
     return this[+groupId][+productKey].count
+  }
+
+  public createProduct(groupId: string, productKey: string): Product {
+    return Object.assign(new Product(), {
+      name: this[+groupId][+productKey].name,
+      price: this[+groupId][+productKey].price,
+    })
   }
 }

@@ -2,6 +2,7 @@ import React, { memo } from 'react'
 import { Col, Row } from 'antd'
 import { ProductPanelComponent } from '../ProductPanel'
 import { useMainPage } from './hooks/useMainPage'
+import styles from './mainpage.module.css'
 
 export const MainPageComponent = memo(
   (): JSX.Element => {
@@ -10,10 +11,10 @@ export const MainPageComponent = memo(
       <div>
         <Row>HEADER</Row>
         <Row>
-          <Col style={{ padding: '8px' }} span={12}>
+          <Col className={styles.column} span={12}>
             <ProductPanelComponent productGroups={productGroups} />
           </Col>
-          <Col span={12} style={{ padding: '8px' }}>
+          <Col className={styles.column} span={12}>
             Basket
           </Col>
         </Row>
