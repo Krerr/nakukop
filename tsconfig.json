@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "skipLibCheck": false,
+    "noEmit": true,
+    "target": "es5",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "preserveSymlinks": true,
+    "jsx": "preserve",
+    "rootDir": ".",
+    "downlevelIteration": true,
+    "strict": true,
+    "removeComments": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    // https://github.com/RyanCavanaugh/learn-a/#tsconfigsettingsjson
+    "strictNullChecks": false,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "babelCore": "@babel/core"
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".next",
+    "build"
+  ],
+  "files": [
+    "./typings.d.ts"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}
