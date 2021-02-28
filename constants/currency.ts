@@ -1,1 +1,1 @@
-export const course = 74
+export const defaultRate = 74

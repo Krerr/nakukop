@@ -2,10 +2,19 @@ import { useEffect, useState } from 'react'
 import { ProductGroupsModel } from '../../../models/ProductGroups.model'
 import { Api } from '../../../api'
 import { NamesServerModel } from '../../../models/NamesServer.model'
+import { defaultRate } from '../../../constants/currency'
 
-export const useMainPage = (): { productGroups: ProductGroupsModel; cart: any; addProductToCart: any; removeProductFromToCart: any } => {
+export const useMainPage = (): {
+  productGroups: ProductGroupsModel
+  cart: any
+  addProductToCart: any
+  removeProductFromToCart: any
+  rate: number
+  setRate: any
+} => {
   const [productGroups, setProductGroups] = useState(new ProductGroupsModel())
   const [cart, setCart] = useState({})
+  const [rate, setRate] = useState(defaultRate)
   useEffect((): void => {
     async function getNames() {
       const names: NamesServerModel = await Api.getNames()
@@ -53,5 +62,5 @@ export const useMainPage = (): { productGroups: ProductGroupsModel; cart: any; a
 
     setCart(newCart)
   }
-  return { productGroups, cart, addProductToCart, removeProductFromToCart }
+  return { productGroups, cart, addProductToCart, removeProductFromToCart, rate, setRate }
 }

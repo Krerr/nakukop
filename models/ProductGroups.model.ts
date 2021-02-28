@@ -57,6 +57,7 @@ export class ProductGroupsModel {
     return Object.assign(new ProductModel(), {
       name: this[+groupId][+productKey].name,
       price: this[+groupId][+productKey].price,
+      count: this[+groupId][+productKey].count,
     })
   }
 
