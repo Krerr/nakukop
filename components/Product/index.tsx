@@ -15,7 +15,7 @@ type ProductProps = {
 export const ProductComponent = memo(
   ({ product = new ProductModel(), id, groupId, setCart, rate }: ProductProps): JSX.Element => {
     const className = useMemo(() => {
-      return cn({ [styles.up]: product.isUpPrice, [styles.down]: product.isDownPrice })
+      return cn(styles.row, { [styles.up]: product.isUpPrice, [styles.down]: product.isDownPrice })
     }, [product])
     return (
       <Row key={id} className={className}>

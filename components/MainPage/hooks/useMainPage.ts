@@ -27,7 +27,6 @@ export const useMainPage = (): {
       setProductGroups(productGroups)
       interval = setInterval(async () => {
         const goods = await Api.getGoods()
-        productGroups.setupGoods(goods)
         setProductGroups(productGroups => productGroups.setupGoods(goods))
       }, REQUEST_TIMEOUT)
     }
