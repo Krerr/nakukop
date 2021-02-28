@@ -1,5 +1,6 @@
-import React, { memo } from 'react'
+import React, { memo, useMemo } from 'react'
 import { Button, Col, Row } from 'antd'
+import cn from 'classnames'
 import { ProductModel } from '../../models/Product.model'
 import styles from './product.module.css'
 
@@ -13,8 +14,11 @@ type ProductProps = {
 
 export const ProductComponent = memo(
   ({ product = new ProductModel(), id, groupId, setCart, rate }: ProductProps): JSX.Element => {
+    const className = useMemo(() => {
+      return cn({ [styles.up]: product.isUpPrice, [styles.down]: product.isDownPrice })
+    }, [product])
     return (
-      <Row key={id}>
+      <Row key={id} className={className}>
         <Col span={19} className={styles.column}>
           {`${product.name} (${product.count})`}
         </Col>

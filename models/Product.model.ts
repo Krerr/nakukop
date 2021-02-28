@@ -3,6 +3,7 @@ export class ProductModel {
   groupId: number
   name: string
   price: number
+  prevPrice: number
   count: number
   amount?: number = 0
   inCard?: boolean = false
@@ -18,5 +19,24 @@ export class ProductModel {
     if (this.amount < 1) {
       this.inCard = false
     }
+  }
+  public changePrice(newPrice: number): ProductModel {
+    if (this.prevPrice) {
+      this.prevPrice = this.price
+    } else {
+      this.prevPrice = newPrice
+    }
+    this.price = newPrice
+    return this
+  }
+  public changeCount(newCount: number): ProductModel {
+    this.count = newCount
+    return this
+  }
+  public get isUpPrice(): boolean {
+    return this.price > this.prevPrice
+  }
+  public get isDownPrice(): boolean {
+    return this.prevPrice > this.price
   }
 }

@@ -2,8 +2,7 @@ import React, { memo } from 'react'
 import { Alert, Space, Table } from 'antd'
 import Title from 'antd/lib/typography/Title'
 import { ProductModel } from '../../models/Product.model'
-import { minWarningCount } from '../../constants/global'
-import { ProductGroupsModel } from '../../models/ProductGroups.model'
+import { MIN_WARNING_COUNT } from '../../constants/global'
 
 type CartProps = {
   removeFromCart: (groupId: string, productKey: string) => void
@@ -24,7 +23,7 @@ const createColumns = (deleteAction: Function, rate: number): any[] => [
     render: (text: string, record: ProductModel) => (
       <>
         <p>{text}</p>
-        {record.count <= minWarningCount && <Alert message="Количество ограничено" type="warning" />}
+        {record.count <= MIN_WARNING_COUNT && <Alert message="Количество ограничено" type="warning" />}
       </>
     ),
   },

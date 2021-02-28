@@ -1,3 +1,11 @@
 .column{
     padding: 8px;
 }
+
+.up{
+    background-color: indianred;
+}
+
+.down{
+    background-color: mediumseagreen;
+}

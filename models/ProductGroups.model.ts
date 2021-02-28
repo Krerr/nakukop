@@ -1,6 +1,6 @@
 import { ProductModel } from './Product.model'
 import { NamesServerModel } from './NamesServer.model'
-import { GoodsServerModel } from './GoodsServer.model'
+import { GoodsServerModel, Product } from './GoodsServer.model'
 
 type ProductOptions = {
   id: number
@@ -60,15 +60,18 @@ export class ProductGroupsModel {
         this.setProduct(+groupId, { id: +productId, name: `${products[productId].N}` })
       }
     }
-    return this
+    return Object.assign(new ProductGroupsModel(), this)
   }
   public setupGoods(goods: GoodsServerModel): ProductGroupsModel {
     if (goods.Success) {
-      goods.Value.Goods.forEach((product: any): void => {
+      goods.Value.Goods.forEach((product: Product): void => {
         // @ts-ignore
-        this.setProductAttributes(product.G, product.T, product.C, product.P)
+        const p = this.getProduct(product.G, product.T)
+        p.changePrice(product.C)
+        p.changeCount(product.P)
+        this[product.G][product.T] = Object.assign(new ProductModel(), p)
       })
     }
-    return this
+    return Object.assign(new ProductGroupsModel(), this)
   }
 }

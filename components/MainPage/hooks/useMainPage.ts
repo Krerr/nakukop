@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { EffectCallback, useEffect, useState } from 'react'
 import { ProductGroupsModel } from '../../../models/ProductGroups.model'
 import { Api } from '../../../api'
 import { NamesServerModel } from '../../../models/NamesServer.model'
-import { defaultRate } from '../../../constants/currency'
+import { DEFAULT_RATE } from '../../../constants/currency'
+import { REQUEST_TIMEOUT } from '../../../constants/global'
 
 export const useMainPage = (): {
   productGroups: ProductGroupsModel
@@ -12,8 +13,11 @@ export const useMainPage = (): {
   setRate: any
 } => {
   const [productGroups, setProductGroups] = useState(new ProductGroupsModel())
-  const [rate, setRate] = useState(defaultRate)
-  useEffect((): void => {
+  const [rate, setRate] = useState(DEFAULT_RATE)
+
+  // @ts-ignore
+  useEffect((): EffectCallback => {
+    let interval: any
     async function getNames() {
       const names: NamesServerModel = await Api.getNames()
       const productGroups = new ProductGroupsModel()
@@ -21,8 +25,14 @@ export const useMainPage = (): {
       const goods = await Api.getGoods()
       productGroups.setupGoods(goods)
       setProductGroups(productGroups)
+      interval = setInterval(async () => {
+        const goods = await Api.getGoods()
+        productGroups.setupGoods(goods)
+        setProductGroups(productGroups => productGroups.setupGoods(goods))
+      }, REQUEST_TIMEOUT)
     }
     getNames()
+    return (): void => clearInterval(interval)
   }, [])
 
   const addToCart = (groupId: string, productKey: string): void => {
