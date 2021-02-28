@@ -6,14 +6,12 @@ import { defaultRate } from '../../../constants/currency'
 
 export const useMainPage = (): {
   productGroups: ProductGroupsModel
-  cart: any
-  addProductToCart: any
-  removeProductFromToCart: any
+  addToCart: any
+  removeFromCart: any
   rate: number
   setRate: any
 } => {
   const [productGroups, setProductGroups] = useState(new ProductGroupsModel())
-  const [cart, setCart] = useState({})
   const [rate, setRate] = useState(defaultRate)
   useEffect((): void => {
     async function getNames() {
@@ -27,40 +25,16 @@ export const useMainPage = (): {
     getNames()
   }, [])
 
-  const addProductToCart = (groupId: string, productKey: string): void => {
-    const newCart = { ...cart }
-    // @ts-ignore
-    if (!newCart[+groupId]) {
-      // @ts-ignore
-      newCart[+groupId] = {}
-    }
-    // @ts-ignore
-    if (!newCart[+groupId][+productKey]) {
-      // @ts-ignore
-      newCart[+groupId][+productKey] = { ...productGroups[+groupId][+productKey], amount: 1 }
-    } else {
-      // @ts-ignore
-      newCart[+groupId][+productKey].amount += 1
-    }
-    setCart(newCart)
+  const addToCart = (groupId: string, productKey: string): void => {
+    const newProductGroups = Object.assign(new ProductGroupsModel(), productGroups)
+    newProductGroups[+groupId][+productKey].addToCard()
+    setProductGroups(newProductGroups)
   }
 
-  const removeProductFromToCart = (groupId: string, productKey: string): void => {
-    const newCart = { ...cart }
-    // @ts-ignore
-    newCart[+groupId][+productKey].amount -= 1
-    // @ts-ignore
-    if (!newCart[+groupId][+productKey].amount) {
-      // @ts-ignore
-      delete newCart[+groupId][+productKey]
-    }
-    // @ts-ignore
-    if (!Object.keys(newCart[+groupId]).length) {
-      // @ts-ignore
-      delete newCart[+groupId]
-    }
-
-    setCart(newCart)
+  const removeFromCart = (groupId: string, productKey: string): void => {
+    const newProductGroups = Object.assign(new ProductGroupsModel(), productGroups)
+    newProductGroups[+groupId][+productKey].removeFromCard()
+    setProductGroups(newProductGroups)
   }
-  return { productGroups, cart, addProductToCart, removeProductFromToCart, rate, setRate }
+  return { productGroups, addToCart, removeFromCart, rate, setRate }
 }

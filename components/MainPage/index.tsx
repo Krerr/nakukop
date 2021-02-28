@@ -8,7 +8,7 @@ import { HeaderComponent } from '../Header'
 
 export const MainPageComponent = memo(
   (): JSX.Element => {
-    const { productGroups, cart, addProductToCart, removeProductFromToCart, rate, setRate } = useMainPage()
+    const { productGroups, addToCart, removeFromCart, rate, setRate } = useMainPage()
     return (
       <div>
         <Row>
@@ -16,11 +16,11 @@ export const MainPageComponent = memo(
         </Row>
         <Row>
           <Col className={styles.column} span={11}>
-            <ProductPanelComponent productGroups={productGroups} setCart={addProductToCart} rate={rate} />
+            <ProductPanelComponent productGroups={productGroups} setCart={addToCart} rate={rate} />
           </Col>
           <Col className={styles.column} span={2}></Col>
           <Col className={styles.column} span={11}>
-            <CartComponent removeProductFromToCart={removeProductFromToCart} cart={cart} rate={rate} />
+            <CartComponent removeFromCart={removeFromCart} cart={productGroups} rate={rate} />
           </Col>
         </Row>
       </div>

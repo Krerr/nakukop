@@ -26,7 +26,7 @@ export const ProductPanelComponent = memo(
                         key={productKey}
                         id={productKey}
                         groupId={groupId}
-                        product={productGroups.createProduct(groupId, productKey)}
+                        product={productGroups.getProduct(groupId, productKey)}
                         setCart={setCart}
                         rate={rate}
                       />

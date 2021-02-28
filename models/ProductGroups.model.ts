@@ -15,14 +15,7 @@ const omitGroupKeys = new Set([])
 export class ProductGroupsModel {
   [groupId: number]: {
     name: string
-    [productId: number]: {
-      name: string
-      price: number
-      count: number
-      id: number
-      groupId: number
-      amount: number
-    }
+    [productId: number]: ProductModel
   }
   public setGroup(id: number, name: string): ProductGroupsModel {
     this[id] = { name }
@@ -30,11 +23,13 @@ export class ProductGroupsModel {
   }
 
   public setProduct(groupId: number, { id, name, price, count }: ProductOptions): ProductGroupsModel {
-    this[groupId] = { ...this[groupId], [id]: { name, price, count, id, groupId } }
+    // @ts-ignore
+    this[groupId] = { ...this[groupId], [id]: Object.assign(new ProductModel(), { name, price, count, id, groupId }) }
     return this
   }
   public setProductAttributes(groupId: number, productId: number, price: number, count: number): ProductGroupsModel {
-    this[groupId][productId] = { ...this[groupId][productId], price, count }
+    // @ts-ignore
+    this[groupId][productId] = Object.assign(new ProductModel(), this[groupId][productId], { price, count })
     return this
   }
 
@@ -53,12 +48,8 @@ export class ProductGroupsModel {
     return this[+groupId][+productKey].count
   }
 
-  public createProduct(groupId: string, productKey: string): ProductModel {
-    return Object.assign(new ProductModel(), {
-      name: this[+groupId][+productKey].name,
-      price: this[+groupId][+productKey].price,
-      count: this[+groupId][+productKey].count,
-    })
+  public getProduct(groupId: string, productKey: string): ProductModel {
+    return this[+groupId][+productKey]
   }
 
   public setupNames(names: NamesServerModel): ProductGroupsModel {

@@ -2,9 +2,11 @@ import React, { memo } from 'react'
 import { Alert, Space, Table } from 'antd'
 import Title from 'antd/lib/typography/Title'
 import { ProductModel } from '../../models/Product.model'
+import { minWarningCount } from '../../constants/global'
+import { ProductGroupsModel } from '../../models/ProductGroups.model'
 
 type CartProps = {
-  removeProductFromToCart: (groupId: string, productKey: string) => void
+  removeFromCart: (groupId: string, productKey: string) => void
   cart: any
   rate: number
 }
@@ -22,7 +24,7 @@ const createColumns = (deleteAction: Function, rate: number): any[] => [
     render: (text: string, record: ProductModel) => (
       <>
         <p>{text}</p>
-        {record.count === 1 && <Alert message="Количество ограничено" type="warning" />}
+        {record.count <= minWarningCount && <Alert message="Количество ограничено" type="warning" />}
       </>
     ),
   },
@@ -38,7 +40,6 @@ const createColumns = (deleteAction: Function, rate: number): any[] => [
     key: 'action',
     render: (_: string, record: ProductModel) => (
       <Space size="middle">
-        {/*{console.log(record)}*/}
         <a onClick={() => deleteAction(record.groupId, record.id)}>Delete</a>
       </Space>
     ),
@@ -46,12 +47,14 @@ const createColumns = (deleteAction: Function, rate: number): any[] => [
 ]
 
 export const CartComponent = memo(
-  ({ cart, removeProductFromToCart, rate }: CartProps): JSX.Element => {
+  ({ cart, removeFromCart, rate }: CartProps): JSX.Element => {
     const formatCartToTable = (cart: any) => {
-      const products: any[] = []
+      const products: ProductModel[] = []
       Object.keys(cart).forEach(groupId => {
         Object.keys(cart[groupId]).forEach(productId => {
-          products.push(cart[groupId][productId])
+          if (cart[groupId][productId].inCard) {
+            products.push(cart[groupId][productId])
+          }
         })
       })
       return products
@@ -60,7 +63,7 @@ export const CartComponent = memo(
       <>
         <Title level={3}>Корзина</Title>
         <Table
-          columns={createColumns(removeProductFromToCart, rate)}
+          columns={createColumns(removeFromCart, rate)}
           dataSource={formatCartToTable(cart)}
           pagination={false}
           summary={data => {

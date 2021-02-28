@@ -22,7 +22,7 @@ export const ProductComponent = memo(
           {(product.price * rate).toFixed(2)}
         </Col>
         <Col span={2} className={styles.column}>
-          <Button type="primary" onClick={() => setCart(groupId, id)}>
+          <Button type="primary" onClick={() => setCart(groupId, id)} disabled={!product.canBuy}>
             Buy
           </Button>
         </Col>
