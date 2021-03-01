@@ -3,10 +3,11 @@ import { Alert, Space, Table } from 'antd'
 import Title from 'antd/lib/typography/Title'
 import { ProductModel } from '../../models/Product.model'
 import { MIN_WARNING_COUNT } from '../../constants/global'
+import { ProductGroupsModel } from '../../models/ProductGroups.model'
 
 type CartProps = {
-  removeFromCart: (groupId: string, productKey: string) => void
-  cart: any
+  removeFromCart: (groupId: number, productKey: number) => void
+  cart: ProductGroupsModel
   rate: number
 }
 
@@ -47,23 +48,12 @@ const createColumns = (deleteAction: Function, rate: number): any[] => [
 
 export const CartComponent = memo(
   ({ cart, removeFromCart, rate }: CartProps): JSX.Element => {
-    const formatCartToTable = (cart: any) => {
-      const products: ProductModel[] = []
-      Object.keys(cart).forEach(groupId => {
-        Object.keys(cart[groupId]).forEach(productId => {
-          if (cart[groupId][productId].inCard) {
-            products.push(cart[groupId][productId])
-          }
-        })
-      })
-      return products
-    }
     return (
       <>
         <Title level={3}>Корзина</Title>
         <Table
           columns={createColumns(removeFromCart, rate)}
-          dataSource={formatCartToTable(cart)}
+          dataSource={cart.formatToTable()}
           pagination={false}
           summary={data => {
             let total = 0

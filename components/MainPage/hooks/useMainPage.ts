@@ -4,14 +4,17 @@ import { Api } from '../../../api'
 import { NamesServerModel } from '../../../models/NamesServer.model'
 import { DEFAULT_RATE } from '../../../constants/currency'
 import { REQUEST_TIMEOUT } from '../../../constants/global'
+import { GoodsServerModel } from '../../../models/GoodsServer.model'
 
-export const useMainPage = (): {
+type MainPageProps = {
   productGroups: ProductGroupsModel
-  addToCart: any
-  removeFromCart: any
+  addToCart: (groupId: number, productKey: number) => void
+  removeFromCart: (groupId: number, productKey: number) => void
   rate: number
-  setRate: any
-} => {
+  setRate: (id: number) => void
+}
+
+export const useMainPage = (): MainPageProps => {
   const [productGroups, setProductGroups] = useState(new ProductGroupsModel())
   const [rate, setRate] = useState(DEFAULT_RATE)
 
@@ -20,11 +23,11 @@ export const useMainPage = (): {
     let interval: any
     async function getNames() {
       const names: NamesServerModel = await Api.getNames()
-      const productGroups = new ProductGroupsModel()
-      productGroups.setupNames(names)
-      const goods = await Api.getGoods()
-      productGroups.setupGoods(goods)
-      setProductGroups(productGroups)
+      const PGroups = new ProductGroupsModel()
+      PGroups.setupNames(names)
+      const goods: GoodsServerModel = await Api.getGoods()
+      PGroups.setupGoods(goods)
+      setProductGroups(PGroups)
       interval = setInterval(async () => {
         const goods = await Api.getGoods()
         setProductGroups(productGroups => productGroups.setupGoods(goods))
@@ -34,13 +37,13 @@ export const useMainPage = (): {
     return (): void => clearInterval(interval)
   }, [])
 
-  const addToCart = (groupId: string, productKey: string): void => {
+  const addToCart = (groupId: number, productKey: number): void => {
     const newProductGroups = Object.assign(new ProductGroupsModel(), productGroups)
-    newProductGroups[+groupId][+productKey].addToCard()
+    newProductGroups[groupId][productKey].addToCard()
     setProductGroups(newProductGroups)
   }
 
-  const removeFromCart = (groupId: string, productKey: string): void => {
+  const removeFromCart = (groupId: number, productKey: number): void => {
     const newProductGroups = Object.assign(new ProductGroupsModel(), productGroups)
     newProductGroups[+groupId][+productKey].removeFromCard()
     setProductGroups(newProductGroups)

@@ -7,26 +7,31 @@ export class ProductModel {
   count: number
   amount?: number = 0
   inCard?: boolean = false
+  key?: string
+
   public get canBuy(): boolean {
     return this.count > this.amount
   }
-  public addToCard() {
+  public addToCard(): ProductModel {
     this.amount += 1
     this.inCard = true
+    return Object.assign(new ProductModel(), this)
   }
-  public removeFromCard() {
+  public removeFromCard(): ProductModel {
     this.amount -= 1
     if (this.amount < 1) {
       this.inCard = false
     }
+    return Object.assign(new ProductModel(), this)
   }
   public changePrice(newPrice: number): ProductModel {
     if (this.prevPrice) {
       this.prevPrice = this.price
-    } else {
-      this.prevPrice = newPrice
     }
-    this.price = newPrice
+    if (this.price !== newPrice) {
+      this.prevPrice = this.price
+      this.price = newPrice
+    }
     return this
   }
   public changeCount(newCount: number): ProductModel {

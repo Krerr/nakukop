@@ -6,9 +6,9 @@ import styles from './product.module.css'
 
 type ProductProps = {
   product: ProductModel
-  id: string
-  groupId: string
-  setCart: (groupId: string, productKey: string) => void
+  id: number
+  groupId: number
+  setCart: (groupId: number, productKey: number) => void
   rate: number
 }
 
